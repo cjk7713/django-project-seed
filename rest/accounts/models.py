@@ -9,12 +9,29 @@ import uuid
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    """
+    email = models.EmailField(
+        verbose_name='E-Mail Adresse',
+        max_length=255,
+        unique=True,
+    )
+    first_name = models.CharField(max_length=100, null=False, default='', verbose_name='Vorname')
+    last_name = models.CharField(max_length=100, null=False, default='', verbose_name='Nachname')
+    active = models.BooleanField(default=True, verbose_name='Ist Aktiviert?')
+    staff = models.BooleanField(default=False, verbose_name='Ist Administrator?')
+    admin = models.BooleanField(default=False, verbose_name='Ist Super-Administrator')
+    """
+    def create_user(self, email, first_name, last_name, active=True, password=None):
         if not email:
             raise ValueError('Users must have an email address')
 
         user = self.model(
             email=self.normalize_email(email),
+            first_name=first_name,
+            last_name=last_name,
+            active=active,
+            staff=False,
+            admin=False
         )
 
         user.set_password(password)

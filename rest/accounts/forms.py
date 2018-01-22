@@ -31,11 +31,13 @@ class RegisterForm(forms.ModelForm):
 
 class UserAdminCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Passwort Wiederholung', widget=forms.PasswordInput)
+
+
 
     class Meta:
         model = User
-        fields = ('email',)
+        fields = ('email', 'last_name')
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")

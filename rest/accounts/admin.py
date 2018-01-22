@@ -7,8 +7,8 @@ from .forms import UserAdminCreationForm, UserAdminChangeForm
 from .models import User
 
 class UserAdmin(BaseUserAdmin):
-    form = UserAdminChangeForm
-    add_form = UserAdminCreationForm
+    #form = UserAdminChangeForm
+    #add_form = UserAdminCreationForm
 
     list_display = ('email', 'first_name', 'last_name', 'admin', 'staff')
     list_filter = ('admin', 'groups',)
