@@ -24,4 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^accounts/$', views.AccountsRootView.as_view(), name="accounts-root"),
+    url(r'^accounts/me/$', views.AccountsIdView.as_view(), name="accounts-me"),
 ]
