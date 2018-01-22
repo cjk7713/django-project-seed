@@ -6,7 +6,7 @@ A(nother) seed project for the django rest framework.
 
   -  [x] Built in Oauth2 Toolkit
   -  [x] Custom user model (That actually works with the default groups model)
-  -  [ ] Public User registration endpoint (Right now you can only create users in the admin section)
+  -  [x] Public User registration endpoint (Right now you can only create users in the admin section)
   
 # How to use
 
