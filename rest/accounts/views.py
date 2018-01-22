@@ -35,3 +35,17 @@ class AccountsRootView(generics.ListCreateAPIView):
         # allow non-authenticated user to create via POST
         return (AllowAny() if self.request.method == 'POST'
                 else IsStaffOrTargetUser()),
+
+class AccountsDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Handles all requests to /accounts/
+    """
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    model = User
+
+    def get_permissions(self):
+        # allow non-authenticated user to create via POST
+        return (AllowAny() if self.request.method == 'POST'
+                else IsStaffOrTargetUser()),
