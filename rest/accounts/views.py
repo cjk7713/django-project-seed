@@ -9,7 +9,18 @@ from .serializers import UserSerializer
 from .permissions import IsStaffOrTargetUser
 from rest_framework import generics
 from rest_framework import authentication, permissions
+from rest_framework import viewsets
 
+
+class AccountViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    model = User
+    queryset = User.objects.all()
+
+    def get_permissions(self):
+        # allow non-authenticated user to create via POST
+        return (AllowAny() if self.request.method == 'POST'
+                else IsStaffOrTargetUser()),
 
 class AccountsIdView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -20,32 +31,3 @@ class AccountsIdView(APIView):
         }
 
         return Response(resp)
-
-
-class AccountsRootView(generics.ListCreateAPIView):
-    """
-    Handles all requests to /accounts/
-    """
-
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    model = User
-
-    def get_permissions(self):
-        # allow non-authenticated user to create via POST
-        return (AllowAny() if self.request.method == 'POST'
-                else IsStaffOrTargetUser()),
-
-class AccountsDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    Handles all requests to /accounts/
-    """
-
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    model = User
-
-    def get_permissions(self):
-        # allow non-authenticated user to create via POST
-        return (AllowAny() if self.request.method == 'POST'
-                else IsStaffOrTargetUser()),

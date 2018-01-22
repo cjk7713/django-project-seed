@@ -19,11 +19,13 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from accounts import views
 
+router = routers.DefaultRouter()
+router.register(r'accounts', views.AccountViewSet, 'accounts')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    url(r'^accounts/$', views.AccountsRootView.as_view(), name="accounts-root"),
     url(r'^accounts/me/$', views.AccountsIdView.as_view(), name="accounts-me"),
-    url(r'^accounts/(?P<pk>[0-9a-f-]+)/$', views.AccountsDetailView.as_view(), name="accounts-detail"),
+    url(r'^', include(router.urls)),
 ]
