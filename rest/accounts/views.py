@@ -1,33 +1,43 @@
 from rest_framework.response import Response
-from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
-from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 
 from .models import User
 from .serializers import UserSerializer
 from .permissions import IsStaffOrTargetUser
 from rest_framework import generics
-from rest_framework import authentication, permissions
+from rest_framework import permissions
 from rest_framework import viewsets
+from oauth2_provider.contrib.rest_framework import IsAuthenticatedOrTokenHasScope
 
 
-class AccountViewSet(viewsets.ModelViewSet):
-    serializer_class = UserSerializer
+class AccountCreateView(generics.CreateAPIView):
+    """
+    Creates a new account.
+    """
+    permission_classes = (permissions.AllowAny,)
     model = User
-    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-    def get_permissions(self):
-        # allow non-authenticated user to create via POST
-        return (AllowAny() if self.request.method == 'POST'
-                else IsStaffOrTargetUser()),
 
-class AccountsIdView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
+class AccountView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    get:
+    Returns the logged in user.
 
-    def get(self, request, format=None):
-        resp = {
-            'id': request.user.id
-        }
+    patch:
+    Updates the logged in user.
 
-        return Response(resp)
+    put:
+    Updates the logged in user.
+
+    delete:
+    Deletes the logged in user.
+    """
+    model = User
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticatedOrTokenHasScope, ]
+    required_scopes = ['write', 'read']
+
+    def get_object(self):
+        return self.request.user

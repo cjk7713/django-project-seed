@@ -13,18 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
 from django.conf.urls import url, include
-from rest_framework_swagger.views import get_swagger_view
-
-
-schema_view = get_swagger_view(title='Your awesome REST API')
+from . import views
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    url(r'^docs/$', schema_view),
-    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    url(r'^account/', include('accounts.urls')),
+    url(r'^create/', views.AccountCreateView.as_view(), name="account-create-view"),
+    url(r'^me/', views.AccountView.as_view(), name="account-self-view")
 ]

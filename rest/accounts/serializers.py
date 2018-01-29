@@ -9,7 +9,8 @@ class UserSerializer(serializers.ModelSerializer):
     )
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
-    password = serializers.CharField(min_length=8)
+    password = serializers.CharField(min_length=8, required=True)
+    active = serializers.BooleanField(default=True)
 
     def create(self, validated_data):
         ModelClass = self.Meta.model
@@ -24,10 +25,5 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = '__all__'
-        extra_kwargs = {
-            'password': {
-                'write_only': True
-            }
-        }
-        read_only_fields = ('is_staff', 'is_superuser', 'is_active', 'date_joined',)
+        fields = ('id', 'email', 'first_name', 'last_name', 'active', 'password')
+        read_only_fields = ()
